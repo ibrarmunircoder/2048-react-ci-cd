@@ -9,11 +9,7 @@ pipeline{
         SCANNER_HOME=tool 'sonar-scanner'
     }
     stages {
-        // stage('clean workspace'){
-        //     steps{
-        //         cleanWs()
-        //     }
-        // }
+        
       
         stage("Sonarqube Analysis "){
             steps{
@@ -29,11 +25,6 @@ pipeline{
                     waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token' 
                 }
             } 
-        }
-        stage('Install Dependencies') {
-            steps {
-                sh "npm install"
-            }
         }
 
         stage('OWASP FS SCAN') {
@@ -62,9 +53,14 @@ pipeline{
             }
         }
 
-        stage("TRIVY"){
+         stage("TRIVY"){
             steps{
                 sh "trivy image sevenajay/2048:latest > trivy.txt" 
+            }
+        }
+        stage('Deploy to container'){
+            steps{
+                sh 'docker run -d --name 2048 -p 3000:3000 ibrarmunir009/my-repo:game-1.0'
             }
         }
     }
