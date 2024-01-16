@@ -45,9 +45,9 @@ pipeline{
                      withCredentials([
         usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'USER', passwordVariable: 'PASS')
         ]) {
-            sh 'docker build -t ibrarmunir009/2048:lates .'
+            sh 'docker build -t ibrarmunir009/2048:latest .'
             sh "echo ${PASS} | docker login -u ${USER} --password-stdin"
-            sh 'docker push ibrarmunir009/2048:lates'
+            sh 'docker push ibrarmunir009/2048:latest'
     }
                 }
             }
@@ -55,7 +55,7 @@ pipeline{
 
          stage("TRIVY"){
             steps{
-                 sh "trivy image ibrarmunir009/2048:lates > trivy.txt" 
+                 sh "trivy image ibrarmunir009/2048:lates22 > trivy.txt" 
             }
         }
          stage('Deploy to kubernets'){
