@@ -61,5 +61,11 @@ pipeline{
                 }
             }
         }
+
+        stage("TRIVY"){
+            steps{
+                sh "trivy image sevenajay/2048:latest > trivy.txt" 
+            }
+        }
     }
 }
