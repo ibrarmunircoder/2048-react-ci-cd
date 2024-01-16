@@ -9,11 +9,11 @@ pipeline{
         SCANNER_HOME=tool 'sonar-scanner'
     }
     stages {
-        stage('clean workspace'){
-            steps{
-                cleanWs()
-            }
-        }
+        // stage('clean workspace'){
+        //     steps{
+        //         cleanWs()
+        //     }
+        // }
       
         stage("Sonarqube Analysis "){
             steps{
