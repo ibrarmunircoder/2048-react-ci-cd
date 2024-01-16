@@ -53,11 +53,7 @@ pipeline{
             }
         }
 
-         stage("TRIVY"){
-            steps{
-                 sh "trivy image ibrarmunir009/2048:lates22 > trivy.txt" 
-            }
-        }
+         
          stage('Deploy to kubernets'){
             steps{
                 script{
