@@ -45,9 +45,9 @@ pipeline{
                      withCredentials([
         usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'USER', passwordVariable: 'PASS')
         ]) {
-            sh 'docker build -t ibrarmunir009/my-repo:game-1.0 .'
+            sh 'docker build -t ibrarmunir009/2048:lates .'
             sh "echo ${PASS} | docker login -u ${USER} --password-stdin"
-            sh 'docker push ibrarmunir009/my-repo:game-1.0'
+            sh 'docker push ibrarmunir009/2048:lates'
     }
                 }
             }
@@ -55,12 +55,16 @@ pipeline{
 
          stage("TRIVY"){
             steps{
-                sh "trivy image sevenajay/2048:latest > trivy.txt" 
+                 sh "trivy image ibrarmunir009/2048:lates > trivy.txt" 
             }
         }
-        stage('Deploy to container'){
+         stage('Deploy to kubernets'){
             steps{
-                sh 'docker run -d --name 2048 -p 3000:3000 ibrarmunir009/my-repo:game-1.0'
+                script{
+                    withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
+                       sh 'kubectl apply -f deployment.yaml'
+                  }
+                }
             }
         }
     }
